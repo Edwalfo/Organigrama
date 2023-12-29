@@ -1,0 +1,10 @@
+.styleNode {
+  padding: 5px;
+  border-radius: 2px;
+  display: inline-block;
+  border: 1px solid red;
+}
+
+.center {
+  text-align: center;
+}
