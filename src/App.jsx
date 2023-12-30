@@ -1,14 +1,10 @@
-
-import Organigrama from './assets/components/organigrama';
+import Organigrama from "./assets/components/organigrama";
 function App() {
-
-
-
   return (
     <>
-    <Organigrama></Organigrama>
+      <Organigrama></Organigrama>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
