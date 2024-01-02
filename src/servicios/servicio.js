@@ -2,6 +2,10 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3300/organigrama/';
 class servicio {
+
+    //Metodos para el CRUD
+
+    //Metodo para obtener todos los nodos del organigrama
     static async getOrganigrama  () {
         try {
             const res = await axios.get(API_URL);
@@ -32,6 +36,7 @@ class servicio {
         }
     }
     
+    //Metodo para obtener un nodo del organigrama por su id
     static async getOrganigramaById (id) {
         try {
             const res = await axios.get(API_URL + id);
@@ -41,6 +46,8 @@ class servicio {
             throw error; 
         }
     }
+
+    //Metodo para crear un nodo del organigrama
     
     static async createOrganigrama (nodo){
         try {
@@ -52,6 +59,7 @@ class servicio {
         }
     }
     
+    //Metodo para actualizar un nodo del organigrama
     static async updateOrganigrama  (id, nodo) {
         try {
             const res = await axios.put(API_URL + id, nodo);
@@ -62,6 +70,7 @@ class servicio {
         }
     }
     
+    //Metodo para eliminar un nodo del organigrama
    static async deleteOrganigrama  (id)  {
         try {
             const res = await axios.delete(API_URL + id);
@@ -72,15 +81,7 @@ class servicio {
         }
     }
     
-    static async getOrganigramaByPadre (id)  {    
-        try {
-            const res = await axios.get(API_URL + 'padre/' + id);
-            return res.data;
-        } catch (error) {
-            console.error('Hubo un error al obtener los datos', error);
-            throw error;
-        }
-    }
+
     
 }
 export default servicio;
