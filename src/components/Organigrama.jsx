@@ -1,11 +1,13 @@
 import { Tree, TreeNode } from "react-organizational-chart";
 import { useEffect, useState } from "react";
 import Servicio from "../servicios/servicio";
-import Modal from "../components/Modal";
+import Modal from "./Modal";
 import Spinner from "./Spinner";
 
 function Organigrama() {
-  const [tree, setTree] = useState([{}]); // Estado para almacenar el árbol de nodos
+  const [tree, setTree] = useState([
+    { name: "", parent_id: null, id: 0, children: [] },
+  ]); // Estado para almacenar el árbol de nodos
   const [showModal, setShowModal] = useState(false); // Estado para mostrar u ocultar el modal
   const [nodo, setNodo] = useState({ name: "", parent_id: null, id: 0 }); // Estado para almacenar el nodo que se está editando
   const [mensaje, setMensaje] = useState(""); // Estado para almacenar el mensaje de error
@@ -48,17 +50,47 @@ function Organigrama() {
     // Encontrar el ID más grande en el array
     const maxId = Math.max(...allIds);
     // Devolver el ID más grande más uno, que será un ID único
-    return maxId + 1;
+    return tree.length > 0 ? maxId + 1 : 1;
   };
 
   // Función para manejar la eliminación de un nodo
   const handleDeleteNode = async (nodeId) => {
+    // Validamos que el nodo no tenga hijos
+    const nodo = obtenerNodoPorId(nodeId);
+    if (buscarHijos(nodo)) {
+      alert("El nodo tiene hijos, no se puede eliminar");
+
+      return;
+    }
+
     try {
       await Servicio.deleteOrganigrama(nodeId);
       fetchArbol();
     } catch (error) {
       console.error("Error borrando nodo:", error);
     }
+    console.log("Delete nodo", nodeId);
+  };
+
+  const obtenerNodoPorId = (id, nodos = tree) => {
+    for (let nodo of nodos) {
+      if (nodo.id === id) {
+        return nodo;
+      }
+
+      if (nodo.children) {
+        let nodoEncontrado = obtenerNodoPorId(id, nodo.children);
+        if (nodoEncontrado) {
+          return nodoEncontrado;
+        }
+      }
+    }
+
+    return null; // Retorna null si no encuentra el nodo con el ID proporcionado
+  };
+
+  const buscarHijos = (nodo) => {
+    return nodo.children.length > 0 ? true : false;
   };
 
   // Función para manejar la adición de un nuevo nodo
@@ -189,7 +221,7 @@ function Organigrama() {
       <h1 className="center mb-3">Organigrama</h1>
       {isLoading ? (
         <Spinner /> // Mostrar el spinner de carga si isLoading es true
-      ) : tree[0].children ? (
+      ) : tree.length > 0 && tree[0].children ? (
         <Tree
           lineWidth={"2px"}
           lineColor={"green"}
@@ -219,10 +251,10 @@ function Organigrama() {
           <div className="d-flex justify-content-center">
             <button
               type="button"
-              className ="btn btn-primary"
+              className="btn btn-primary"
               onClick={() => handleAddNode(null)}
             >
-              Crear nodo raíz
+              Crear raíz
             </button>
           </div>
         </div>
