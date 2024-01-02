@@ -2,9 +2,14 @@
   padding: 5px;
   border-radius: 2px;
   display: inline-block;
-  border: 1px solid red;
+  border: 1px solid #ccc;
+  background-color: azure;
 }
 
 .center {
   text-align: center;
+}
+
+.pointer {
+  cursor: pointer;
 }

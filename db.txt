@@ -2,7 +2,7 @@ CREATE DATABASE organigrama;
 USE organigrama;
 
 CREATE TABLE nodes (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     parent_id INT,
     FOREIGN KEY (parent_id) REFERENCES nodes(id)

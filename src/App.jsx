@@ -1,4 +1,5 @@
-import Organigrama from "./assets/components/organigrama";
+import Organigrama from "./components/Organigrama";
+
 function App() {
   return (
     <>
