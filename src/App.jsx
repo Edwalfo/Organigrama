@@ -1,9 +1,10 @@
 import Organigrama from "./components/Organigrama";
+import Page from "./pages/Page";
 
 function App() {
   return (
     <>
-      <Organigrama></Organigrama>
+      <Page />
     </>
   );
 }
