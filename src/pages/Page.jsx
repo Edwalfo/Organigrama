@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import TablaOrganigrama from "../components/TablaOrganigrama";
 import servicio from "../servicios/servicio";
 import Modal from "../components/Modal";
+import { Link } from "react-router-dom";
 
 function Page({ updateData }) {
   const [cargo, setCargo] = useState([]);
@@ -36,7 +37,8 @@ function Page({ updateData }) {
 
   const validateCargo = () => {
     if (!newCargo.name) return "El nombre es requerido";
-    if (newCargo.name.length < 3) return "El nombre debe tener al menos 3 caracteres";
+    if (newCargo.name.length < 3)
+      return "El nombre debe tener al menos 3 caracteres";
     if (newCargo.parent_id === "") return "Debe seleccionar una dependencia";
     return null;
   };
@@ -63,7 +65,10 @@ function Page({ updateData }) {
       resetNewCargo();
       setMensaje("");
     } catch (error) {
-      console.error(`Error ${action === "add" ? "adding" : "updating"} Cargo:`, error);
+      console.error(
+        `Error ${action === "add" ? "adding" : "updating"} Cargo:`,
+        error
+      );
     }
   };
 
@@ -98,13 +103,24 @@ function Page({ updateData }) {
     }
   };
 
-  const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+  const capitalizeFirstLetter = (string) =>
+    string.charAt(0).toUpperCase() + string.slice(1);
 
   return (
     <>
       <div className="container mt-4">
+        <nav className="nav justify-content-center  ">
+          <Link className="nav-link" to="/Organigrama">
+            Diseño 1
+          </Link>
+        </nav>
+
         <h1>Mostrar</h1>
-        <button type="button" className="btn btn-primary" onClick={() => setShowModal(true)}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => setShowModal(true)}
+        >
           Agregar
         </button>
         <TablaOrganigrama
