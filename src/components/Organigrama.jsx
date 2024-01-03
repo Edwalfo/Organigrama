@@ -2,7 +2,7 @@ import { Tree, TreeNode } from "react-organizational-chart";
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import Nodo from "./Nodo";
-
+import ModalFunciones from "./ModalFunciones";
 
 // Función para generar el árbol, movida fuera del componente
 const handleGenerateTree = (data) => {
@@ -26,17 +26,31 @@ const handleGenerateTree = (data) => {
 function Organigrama({ data }) {
   const [tree, setTree] = useState([{}]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [cargo, setCargo] = useState("");
 
   useEffect(() => {
     setTree(handleGenerateTree(data));
   }, [data]);
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleClickedNode = (node) => {
+    setCargo(node);
+  };
 
   const renderTree = (node) => (
     <TreeNode
       key={node.id}
       label={
         <div className="styleNode">
-          <Nodo tree={node}></Nodo>
+          <Nodo
+            tree={node}
+            setShowModal={setShowModal}
+            handleClickedNode={handleClickedNode}
+          ></Nodo>
         </div>
       }
     >
@@ -56,7 +70,11 @@ function Organigrama({ data }) {
           lineBorderRadius={"2px"}
           label={
             <div className="styleNode">
-              <Nodo tree={tree[0]}></Nodo>
+              <Nodo
+                tree={tree[0]}
+                setShowModal={setShowModal}
+                handleClickedNode={handleClickedNode}
+              ></Nodo>
             </div>
           }
         >
@@ -70,6 +88,11 @@ function Organigrama({ data }) {
         </div>
       )}
 
+      <ModalFunciones
+        showModal={showModal}
+        closeModal={handleModalClose}
+        cargo={cargo}
+      />
     </>
   );
 }

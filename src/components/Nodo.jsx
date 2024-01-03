@@ -1,12 +1,9 @@
-import ModalFunciones from "./ModalFunciones";
+function Nodo({ tree, setShowModal, handleClickedNode }) {
+  const handleClick = () => {
+    setShowModal(true);
+    handleClickedNode(tree);
+  };
 
-const [showModal, setshowModal] = useState(false);
-
-const mostrar =()=>{
-    console.log("prueba");
-}
-
-function Nodo({tree}) {
   return (
     <>
       <div className="row justify-content-center align-items-center g-2">
@@ -15,7 +12,7 @@ function Nodo({tree}) {
         </div>
       </div>
       <div className="row justify-content-center align-items-center g-2">
-        <div className="col" onClick={()=>console.log("mostrar")}>
+        <div className="col" onClick={() => handleClick()}>
           <img
             className="image"
             src="https://brighterwriting.com/wp-content/uploads/icon-user-default.png"
@@ -26,8 +23,6 @@ function Nodo({tree}) {
           <p className="ocupante">Jonh Doe</p>
         </div>
       </div>
-
-      <ModalFunciones/>
     </>
   );
 }
