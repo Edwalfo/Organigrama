@@ -1,11 +1,23 @@
 .styleNode {
-  padding: 5px;
-  border-radius: 2px;
+  width: 150px;    
+  height: 50px;      
+  padding: 10px 15px;  
+  font-size: 14px;
+
+  border-radius: 10px;
   display: inline-block;
-  border: 1px solid #ccc;
-  background-color: azure;
+  border: 2px solid #3498db; /* Borde con un color azul más oscuro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  background-color: #ecf0f1; /* Color de fondo más suave */
+  color: #2c3e50; /* Color de texto más oscuro para contraste */
+  transition: transform 0.3s ease; /* Transición suave para efectos */
 }
 
+.styleNode:hover {
+  transform: scale(1.05); /* Efecto de escala al pasar el cursor sobre el nodo */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra ligeramente más pronunciada */
+  border-color: #2980b9; /* Cambio de color del borde en hover */
+}
 .center {
   text-align: center;
 }

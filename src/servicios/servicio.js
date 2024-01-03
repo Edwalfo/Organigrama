@@ -9,25 +9,6 @@ class servicio {
     static async getOrganigrama  () {
         try {
             const res = await axios.get(API_URL);
-            const data = res.data;
-    
-            // // Paso 1: Crear el objeto de mapeo
-            // const map = {};
-            // data.forEach(item => {
-            //     map[item.id] = { ...item, children: [] };
-            // });
-    
-            // // Paso 2: Construir la estructura del árbol
-            // let tree = [];
-            // data.forEach(item => {
-            //     if (item.parent_id === null) {
-            //         // Este es un nodo raíz
-            //         tree.push(map[item.id]);
-            //     } else {
-            //         // Este es un nodo hijo, añádelo a la lista de hijos de su padre
-            //         map[item.parent_id].children.push(map[item.id]);
-            //     }
-            // });
     
             return res.data
         } catch (error) {

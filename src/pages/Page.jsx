@@ -3,16 +3,15 @@ import TablaOrganigrama from "../components/TablaOrganigrama";
 import servicio from "../servicios/servicio";
 import Modal from "../components/Modal";
 
-function Page() {
+function Page({ updateData }) {
   const [cargo, setCargo] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedCargoId, setSelectedCargoId] = useState(null);
   const [newCargo, setNewCargo] = useState({
     name: "",
-    parent_id: 0,
+    parent_id: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
@@ -21,57 +20,59 @@ function Page() {
 
   const fetchCargos = async () => {
     try {
-      const cargo = await servicio.getOrganigrama();
-      console.log(cargo);
-      setCargo(cargo);
+      const fetchedCargos = await servicio.getOrganigrama();
+      setCargo(fetchedCargos);
     } catch (error) {
       console.error("Error fetching cargos:", error);
     }
   };
 
+  const resetNewCargo = () => setNewCargo({ name: "", parent_id: "" });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewCargo((prevCargo) => ({
-      ...prevCargo,
-      [name]: value,
-    }));
+    setNewCargo((prevCargo) => ({ ...prevCargo, [name]: value }));
   };
 
-  const resetNewCargo = () => {
-    setNewCargo({
-      name: "",
-      parent_id: 0,
-    });
+  const validateCargo = () => {
+    if (!newCargo.name) return "El nombre es requerido";
+    if (newCargo.name.length < 3) return "El nombre debe tener al menos 3 caracteres";
+    if (newCargo.parent_id === "") return "Debe seleccionar una dependencia";
+    return null;
   };
 
-  const handleAddCargo = async () => {
+  const handleAddOrUpdateCargo = async (action) => {
+    const errorMessage = validateCargo();
+    if (errorMessage) {
+      setMensaje(errorMessage);
+      return;
+    }
+
+    newCargo.name = capitalizeFirstLetter(newCargo.name);
+
     try {
-      await servicio.createOrganigrama(newCargo);
-      fetchCargos(); // Refresh the Cargos after adding a new one
+      if (action === "add") {
+        await servicio.createOrganigrama(newCargo);
+      } else {
+        await servicio.updateOrganigrama(selectedCargoId, newCargo);
+      }
+      fetchCargos();
+      updateData();
       setShowModal(false);
       setIsEditMode(false);
       resetNewCargo();
+      setMensaje("");
     } catch (error) {
-      console.error("Error adding Cargo:", error);
+      console.error(`Error ${action === "add" ? "adding" : "updating"} Cargo:`, error);
     }
   };
 
   const handleModalClose = () => {
     resetNewCargo();
     setShowModal(false);
+    setMensaje("");
     setSelectedCargoId(null);
-  };
-
-  const handleUpdateCargo = async () => {
-    try {
-      await servicio.updateOrganigrama(selectedCargoId, newCargo);
-      fetchCargos(); // Refresh the Cargos after updating
-      setShowModal(false);
-      setIsEditMode(false);
-      resetNewCargo();
-    } catch (error) {
-      console.error("Error updating Cargo:", error);
-    }
+    setIsEditMode(false);
   };
 
   const handleEditCargo = (id) => {
@@ -83,42 +84,43 @@ function Page() {
   };
 
   const handleDeleteCargo = async (id) => {
+    const dependencias = cargo.filter((cargo) => cargo.parent_id === id);
+    if (dependencias.length > 0) {
+      alert("No se puede eliminar el cargo porque tiene dependencias");
+      return;
+    }
     try {
       await servicio.deleteOrganigrama(id);
-      fetchCargos(); // Refresh the Cargos after deleting
+      fetchCargos();
+      updateData();
     } catch (error) {
       console.error("Error deleting Cargo:", error);
     }
   };
 
+  const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
   return (
     <>
       <div className="container mt-4">
         <h1>Mostrar</h1>
-
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => setShowModal(true)}
-        >
+        <button type="button" className="btn btn-primary" onClick={() => setShowModal(true)}>
           Agregar
         </button>
-
         <TablaOrganigrama
           cargos={cargo}
           handleEditCargo={handleEditCargo}
           handleDeleteCargo={handleDeleteCargo}
         />
       </div>
-
       <Modal
         showModal={showModal}
         onClose={handleModalClose}
         handleInputChange={handleInputChange}
         newCargo={newCargo}
         isEditMode={isEditMode}
-        handleAddCargo={handleAddCargo}
-        handleUpdateCargo={handleUpdateCargo}
+        handleAddCargo={() => handleAddOrUpdateCargo("add")}
+        handleUpdateCargo={() => handleAddOrUpdateCargo("update")}
         resetNewCargo={resetNewCargo}
         mensaje={mensaje}
         cargo={cargo}
