@@ -1,23 +1,50 @@
 .styleNode {
-  width: 150px;    
-  height: 50px;      
-  padding: 10px 15px;  
+  width: 180px;
+  height: auto;
+  padding: 10px 15px;
   font-size: 14px;
+  line-height: 1.5; /* Mejora la legibilidad del texto */
 
   border-radius: 10px;
   display: inline-block;
-  border: 2px solid #3498db; /* Borde con un color azul más oscuro */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-  background-color: #ecf0f1; /* Color de fondo más suave */
-  color: #2c3e50; /* Color de texto más oscuro para contraste */
-  transition: transform 0.3s ease; /* Transición suave para efectos */
+  border: 2px solid #3498db;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Añade transiciones a todas las propiedades que cambian */
 }
 
 .styleNode:hover {
-  transform: scale(1.05); /* Efecto de escala al pasar el cursor sobre el nodo */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra ligeramente más pronunciada */
-  border-color: #2980b9; /* Cambio de color del borde en hover */
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border-color: #2980b9;
 }
+
+.styleNode:active {
+  transform: scale(1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-color: #3498db;
+}
+
+.styleNode .title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+.styleNode .ocupante {
+  font-weight: 600;
+  font-size: 12px;
+  margin: 0;
+}
+
+.styleNode .image {
+  width: 50px;
+  height: 50px;
+  border-radius: 150px;
+  cursor: pointer;
+}
+
 .center {
   text-align: center;
 }

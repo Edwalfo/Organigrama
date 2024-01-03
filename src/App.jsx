@@ -3,6 +3,7 @@ import Page from "./pages/Page";
 import { useState, useEffect } from "react";
 import servicio from "./servicios/servicio";
 
+
 function App() {
   const [data, setData] = useState([]);
 
@@ -22,6 +23,7 @@ function App() {
     <>
       <Page updateData={updateData} />
       <Organigrama data={data} />
+    
     </>
   );
 }

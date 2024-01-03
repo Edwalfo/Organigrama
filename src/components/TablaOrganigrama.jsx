@@ -32,6 +32,7 @@ const TablaOrganigrama = ({ cargos, handleEditCargo, handleDeleteCargo  }) => {
               <ActionButton
                 actionType="edit"
                 onClick={() => handleEditCargo(cargo.id)}
+                
               />
               <ActionButton
                 actionType="delete"
